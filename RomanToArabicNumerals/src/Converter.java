@@ -1,31 +1,27 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 public class Converter {
 
 	private int arabicNum;
 	private String romanNum;
 
-	private int[] arabics = { 1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000 };
-	private String[] romans = { "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M" };
-	private HashMap<String, Integer> numerals = new HashMap<String, Integer>();
+	private LinkedHashMap<String, Integer> numerals = new LinkedHashMap<String, Integer>();
 
 	public Converter() {
-		numerals.put("I", 1);
-		numerals.put("IV", 4);
-		numerals.put("V", 5);
-		numerals.put("IX", 9);
-		numerals.put("X", 10);
-		numerals.put("XL", 40);
-		numerals.put("L", 50);
-		numerals.put("XC", 90);
-		numerals.put("C", 100);
-		numerals.put("CD", 400);
-		numerals.put("D", 500);
-		numerals.put("CM", 900);
 		numerals.put("M", 1000);
+		numerals.put("CM", 900);
+		numerals.put("D", 500);
+		numerals.put("CD", 400);
+		numerals.put("C", 100);
+		numerals.put("XC", 90);
+		numerals.put("L", 50);
+		numerals.put("XL", 40);
+		numerals.put("X", 10);
+		numerals.put("IX", 9);
+		numerals.put("V", 5);
+		numerals.put("IV", 4);
+		numerals.put("I", 1);
 	};
 
 	public String convertToRoman(int number) {
@@ -38,14 +34,14 @@ public class Converter {
 		int times = 0;
 		arabicNum = number;
 		String ans = "";
-
-		for (int i = numerals.size() - 1; i >= 0; i--) {
-			times = arabicNum / arabics[i];
+		
+		for (Entry<String, Integer> entry : numerals.entrySet()) {
+			times = arabicNum / entry.getValue();
 			while (times > 0) {
-				ans += romans[i];
+				ans += entry.getKey();
 				times--;
 			}
-			arabicNum %= arabics[i];
+			arabicNum %= entry.getValue();
 		}
 
 		return ans;
@@ -61,11 +57,10 @@ public class Converter {
 		romanNum = romanNum.replace("XC", "LXXXX");
 		romanNum = romanNum.replace("CD", "CCCC");
 		romanNum = romanNum.replace("CM", "DCCCC");
-		
-		for (int i = 0; i < romanNum.length(); i++)
-        {
-            ans += (numerals.get(Character.toString(romanNum.charAt(i))));
-        }
+
+		for (int i = 0; i < romanNum.length(); i++) {
+			ans += (numerals.get(Character.toString(romanNum.charAt(i))));
+		}
 
 		return ans;
 	}
